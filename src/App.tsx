@@ -79,7 +79,7 @@ export function App() {
           <div className="KaizntreeGrid">
             <Transactions transactions={transactions} />
 
-            {transactions !== null && paginatedTransactions?.nextPage!=null &&(
+            {transactions !== null && paginatedTransactions?.nextPage!=null &&( // Bug 6 solved
                 <button
                     className="KaizntreeButton"
                     disabled={paginatedTransactionsUtils.loading}
