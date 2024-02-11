@@ -1,11 +1,11 @@
-import { useCallback, useContext } from "react"
-import { AppContext } from "../utils/context"
-import { fakeFetch, RegisteredEndpoints } from "../utils/fetch"
-import { useWrappedRequest } from "./useWrappedRequest"
+import {useCallback, useContext} from "react"
+import {AppContext} from "../utils/context"
+import {fakeFetch, RegisteredEndpoints} from "../utils/fetch"
+import {useWrappedRequest} from "./useWrappedRequest"
 
 export function useCustomFetch() {
-    const { cache } = useContext(AppContext)
-    const { loading, wrappedRequest } = useWrappedRequest()
+    const {cache} = useContext(AppContext)
+    const {loading, wrappedRequest} = useWrappedRequest()
 
     const fetchWithCache = useCallback(
         async <TData, TParams extends object = object>(
@@ -67,7 +67,7 @@ export function useCustomFetch() {
         [cache]
     )
 
-    return { fetchWithCache, fetchWithoutCache, clearCache, clearCacheByEndpoint, loading }
+    return {fetchWithCache, fetchWithoutCache, clearCache, clearCacheByEndpoint, loading}
 }
 
 function getCacheKey(endpoint: RegisteredEndpoints, params?: object) {

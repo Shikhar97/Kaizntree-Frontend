@@ -92,7 +92,7 @@ hr.KaizntreeBreak--l {
 
 .KaizntreeInputSelect--dropdown-container {
   display: none;
-  position: absolute; /*Bug 1 solved*/
+  position: absolute; /*Bug 1 solved Replaced the "fixed" value with absolute to make it move together*/
   width: 100%;
   max-width: 700px;
   border: 1px solid var(--color-darker-shade);

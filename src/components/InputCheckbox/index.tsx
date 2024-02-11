@@ -5,6 +5,7 @@ import { InputCheckboxComponent } from "./types"
 export const InputCheckbox: InputCheckboxComponent = ({ id, checked = false, disabled, onChange }) => {
     const { current: inputId } = useRef(`KaizntreeInputCheckbox-${id}`)
     // Bug 2 solved
+    // Removed the label component which was getting selected instead of checkbox
     return (
         <div className="KaizntreeInputCheckbox--container" data-testid={inputId}>
             <input
