@@ -24,17 +24,18 @@ export function App() {
     transactionsByEmployeeUtils.invalidateData()
 
     await employeeUtils.fetchAll()
+    setIsLoading(false) // Bug 5 solved
     await paginatedTransactionsUtils.fetchAll()
 
-    setIsLoading(false)
+
   }, [employeeUtils, paginatedTransactionsUtils, transactionsByEmployeeUtils])
 
   const loadTransactionsByEmployee = useCallback(
-    async (employeeId: string) => {
-      paginatedTransactionsUtils.invalidateData()
-      await transactionsByEmployeeUtils.fetchById(employeeId)
-    },
-    [paginatedTransactionsUtils, transactionsByEmployeeUtils]
+      async (employeeId: string) => {
+        paginatedTransactionsUtils.invalidateData()
+        await transactionsByEmployeeUtils.fetchById(employeeId)
+      },
+      [paginatedTransactionsUtils, transactionsByEmployeeUtils]
   )
 
   useEffect(() => {
@@ -44,49 +45,53 @@ export function App() {
   }, [employeeUtils.loading, employees, loadAllTransactions])
 
   return (
-    <Fragment>
-      <main className="MainContainer">
-        <Instructions />
+      <Fragment>
+        <main className="MainContainer">
+          <Instructions />
 
-        <hr className="KaizntreeBreak--l" />
+          <hr className="KaizntreeBreak--l" />
 
-        <InputSelect<Employee>
-          isLoading={isLoading}
-          defaultValue={EMPTY_EMPLOYEE}
-          items={employees === null ? [] : [EMPTY_EMPLOYEE, ...employees]}
-          label="Filter by employee"
-          loadingLabel="Loading employees"
-          parseItem={(item) => ({
-            value: item.id,
-            label: `${item.firstName} ${item.lastName}`,
-          })}
-          onChange={async (newValue) => {
-            if (newValue === null) {
-              return
-            }
-
-            await loadTransactionsByEmployee(newValue.id)
-          }}
-        />
-
-        <div className="KaizntreeBreak--l" />
-
-        <div className="KaizntreeGrid">
-          <Transactions transactions={transactions} />
-
-          {transactions !== null && (
-            <button
-              className="KaizntreeButton"
-              disabled={paginatedTransactionsUtils.loading}
-              onClick={async () => {
-                await loadAllTransactions()
+          <InputSelect<Employee>
+              isLoading={isLoading}
+              defaultValue={EMPTY_EMPLOYEE}
+              items={employees === null ? [] : [EMPTY_EMPLOYEE, ...employees]}
+              label="Filter by employee"
+              loadingLabel="Loading employees"
+              parseItem={(item) => ({
+                value: item.id,
+                label: `${item.firstName} ${item.lastName}`,
+              })}
+              onChange={async (newValue) => {
+                if (newValue === null) {
+                  return
+                }
+                if(newValue.id === ""){           // Bug 3 solved
+                  await loadAllTransactions()
+                }
+                else{
+                  await loadTransactionsByEmployee(newValue.id)
+                }
               }}
-            >
-              View More
-            </button>
-          )}
-        </div>
-      </main>
-    </Fragment>
+          />
+
+          <div className="KaizntreeBreak--l" />
+
+          <div className="KaizntreeGrid">
+            <Transactions transactions={transactions} />
+
+            {transactions !== null && paginatedTransactions?.nextPage!=null &&(
+                <button
+                    className="KaizntreeButton"
+                    disabled={paginatedTransactionsUtils.loading}
+                    onClick={async () => {
+                      await loadAllTransactions()
+                    }}
+                >
+                  View More
+                </button>
+            )}
+          </div>
+        </main>
+      </Fragment>
   )
 }
