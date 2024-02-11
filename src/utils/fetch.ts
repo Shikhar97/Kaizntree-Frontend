@@ -10,8 +10,8 @@ const timeout = getTimeout()
 const mockTimeout = 1 * timeout
 
 export function fakeFetch<TData, TParams extends object = object>(
-  endpoint: RegisteredEndpoints,
-  params?: TParams
+    endpoint: RegisteredEndpoints,
+    params?: TParams
 ): Promise<TData> {
   return new Promise((resolve, reject) => {
     mockApiLogger({
@@ -77,10 +77,10 @@ export function fakeFetch<TData, TParams extends object = object>(
 }
 
 function mockApiLogger({
-  data,
-  message = "Success request",
-  type = "success",
-}: {
+                         data,
+                         message = "Success request",
+                         type = "success",
+                       }: {
   message?: string
   data: object
   type?: "success" | "error" | "info"
@@ -107,7 +107,7 @@ function mockApiLogger({
 
 function getTimeout() {
   const timeout = parseInt(
-    new URL(document.location as unknown as URL).searchParams.get("timeout") ??
+      new URL(document.location as unknown as URL).searchParams.get("timeout") ??
       process.env.REACT_APP_TIMEOUT_MULTIPLIER ??
       "1000"
   )
@@ -120,7 +120,7 @@ function getTimeout() {
 }
 
 export type RegisteredEndpoints =
-  | "employees"
-  | "paginatedTransactions"
-  | "transactionsByEmployee"
-  | "setTransactionApproval"
+    | "employees"
+    | "paginatedTransactions"
+    | "transactionsByEmployee"
+    | "setTransactionApproval"

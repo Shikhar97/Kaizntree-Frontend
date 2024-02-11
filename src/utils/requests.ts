@@ -17,15 +17,20 @@ const data: { employees: Employee[]; transactions: Transaction[] } = {
 
 export const getEmployees = (): Employee[] => data.employees
 
+// Bug 4 solved
 export const getTransactionsPaginated = ({
-  page,
-}: PaginatedRequestParams): PaginatedResponse<Transaction[]> => {
+                                           page,
+                                         }: PaginatedRequestParams, loadPreviousData:boolean = true): PaginatedResponse<Transaction[]> => {
   if (page === null) {
     throw new Error("Page cannot be null")
   }
 
-  const start = page * TRANSACTIONS_PER_PAGE
+  let start = page * TRANSACTIONS_PER_PAGE
   const end = start + TRANSACTIONS_PER_PAGE
+
+  if(loadPreviousData){
+    start = 0;
+  }
 
   if (start > data.transactions.length) {
     throw new Error(`Invalid page ${page}`)
@@ -49,7 +54,7 @@ export const getTransactionsByEmployee = ({ employeeId }: RequestByEmployeeParam
 
 export const setTransactionApproval = ({ transactionId, value }: SetTransactionApprovalParams): void => {
   const transaction = data.transactions.find(
-    (currentTransaction) => currentTransaction.id === transactionId
+      (currentTransaction) => currentTransaction.id === transactionId
   )
 
   if (!transaction) {
